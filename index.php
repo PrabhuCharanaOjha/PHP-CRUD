@@ -77,6 +77,27 @@ if (isset($_REQUEST['update'])) {
 }
 
 
+// delete data from database
+if (isset($_REQUEST['Delete'])) {
+  $hId = $_REQUEST['hId'];
+  $sql1 = "SELECT * FROM datas WHERE id='$hId'";
+  $result = $conn->query($sql1);
+  if ($row1 = $result->fetch_assoc()) {
+    unlink("./image/" . $row1['image']);
+    $sql2 = "DELETE FROM datas WHERE id='$hId'";
+    if ($conn->query($sql2)) {
+      echo 'done';
+    } else {
+      echo "failed to delete";
+    }
+  } else {
+    echo "failed delete file from folder";
+  }
+  echo '<meta http-equiv="refresh" content="0;url=?closed" />';
+}
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -113,16 +134,22 @@ if (isset($_REQUEST['update'])) {
           <div class="row">
             <div class="form-group col">
               <label for="Name">Name</label>
-              <input type="text" name="Name" class="form-control" placeholder="Please Enter Your Name" value="<?php if (isset($editdata['name'])) {echo $editdata['name'];} ?>">
+              <input type="text" name="Name" class="form-control" placeholder="Please Enter Your Name" value="<?php if (isset($editdata['name'])) {
+                                                                                                                echo $editdata['name'];
+                                                                                                              } ?>">
             </div>
             <div class="form-group col">
               <label for="Email">Email</label>
-              <input type="email" name="Email" class="form-control" placeholder="Please Enter Your Email" value="<?php if (isset($editdata['email'])) {echo $editdata['email'];} ?>">
+              <input type="email" name="Email" class="form-control" placeholder="Please Enter Your Email" value="<?php if (isset($editdata['email'])) {
+                                                                                                                    echo $editdata['email'];
+                                                                                                                  } ?>">
             </div>
           </div>
           <div class="form-group">
             <label for="Mobile Number">Mobile Number</label>
-            <input type="number" name="Mobile" class="form-control" placeholder="Enter Your Mobile Number" value="<?php if (isset($editdata['mobile'])) {echo $editdata['mobile'];} ?>">
+            <input type="number" name="Mobile" class="form-control" placeholder="Enter Your Mobile Number" value="<?php if (isset($editdata['mobile'])) {
+                                                                                                                    echo $editdata['mobile'];
+                                                                                                                  } ?>">
           </div>
           <div class="form-group">
             <label for="Uploadfile">Uploadfile</label>
@@ -194,29 +221,6 @@ if (isset($_REQUEST['update'])) {
       </div>
     </div>
   </div>
-
-  <?php
-
-  // delete data from database
-  if (isset($_REQUEST['Delete'])) {
-    $hId = $_REQUEST['hId'];
-    $sql1 = "SELECT * FROM datas WHERE id='$hId'";
-    $result = $conn->query($sql1);
-    if ($row1 = $result->fetch_assoc()) {
-      unlink("./image/" . $row1['image']);
-      $sql2 = "DELETE FROM datas WHERE id='$hId'";
-      if ($conn->query($sql2)) {
-        echo 'done';
-      } else {
-        echo "failed to delete";
-      }
-    } else {
-      echo "failed delete file from folder";
-    }
-    echo '<meta http-equiv="refresh" content="0;url=?closed" />';
-  }
-  ?>
-
 
 </body>
 <script src="js/jquery.min.js"></script>
